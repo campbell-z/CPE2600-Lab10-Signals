@@ -1,0 +1,10 @@
+# Compiled executables
+recv_signal
+send_signal
+signal_alarm
+signal_handler
+signal_segfault
+signal_sigaction
+
+# Object files
+*.o

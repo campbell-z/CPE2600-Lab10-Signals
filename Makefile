@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS= -Wall -Wextra -Werror
 
-TARGETS = signal_handler signal_alarm signal_segfault signal_sigaction recv_signal send_signal
+TARGETS = signal_handler signal_alarm signal_segfault signal_sigaction recv_signal send_signal table_tennis_server table_tennis_client
 
 all: $(TARGETS)
 
@@ -22,5 +22,11 @@ recv_signal: recv_signal.c
 
 send_signal: send_signal.c 
 	$(CC) $(CFLAGS) send_signal.c -o send_signal
+
+table_tennis_server: table_tennis_server.c
+	$(CC) $(CFLAGS) table_tennis_server.c -o table_tennis_server
+
+table_tennis_client: table_tennis_client.c
+	$(CC) $(CFLAGS) table_tennis_client.c -o table_tennis_client
 clean:
 	rm -f $(TARGETS)

@@ -66,6 +66,28 @@ Transmits signals containing additional data using sigqueue()
 - Stores the integer in a union sigval structure
 - Sends SIGUSR1 and the integer payload to the receiving process using sigqueue()
 
+### 7. table_tennis_server.c
+
+Implements the server component of a signal based table tennis simulation
+
+- Accepts the client PID as a command line argument
+- Initiates the game by serving the first ball
+- Uses SIGRTMIN and sigqueue() for interprocess communication
+- Handles failed returns and maintains the game score
+- Implements traditional tennis scoring, including deuce and advantage
+- Sends score updates to the client and determines the winner
+
+### 8. table_tennis_client.c
+
+Implements the client component of a signal based table tennis simulation
+
+- Displays its PID and waits for the server's first serve
+- Identifies the server using the sender PID of the first incoming signal
+- Receives and returns the ball using SIGRTMIN
+- Uses randomized return delays between 1.0 and 2.0 seconds
+- Randomly generates failed returns and notifies the server using SIGUSR2
+- Receives score updates and displays the current game score
+
 ## Compilation
 
 Compile all programs using the provided Makefile:
@@ -78,6 +100,10 @@ To remove compiled executables and object files:
 
 ```bash
 make clean
+```
+The Makefile uses GCC with the following compiler flags:
+```bash
+-Wall -Wextra -Werror
 ```
 
 ## Execution
@@ -132,6 +158,23 @@ The sending process generates a random integer and transmits it to the receiver
 using sigqueue()
 
 The receiving process displays the transmitted integer
+
+### Recieve serve
+Start the client:
+```bash
+./table_tennis_client
+```
+Record the client PID displayed in the terminal.
+
+### Sending serve
+In a seperate terminal, start the server using the client PID:
+```bash
+./table_tennis_server <CLIENT_PID>
+```
+The server serves first, and the client attempts to return the ball.
+The process exchanges signals until a player fails to return the ball 
+and the game awards a point. The server maintains the score and sends
+updates to the client until one player wins.
 
 ## Requirements
 
